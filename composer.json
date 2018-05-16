@@ -16,12 +16,12 @@
     },
     "autoload": {
         "psr-4": {
-            "MyComponent\\": "src/"
+            "Keboola\\App\\OrchestratorMigrate\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "MyComponent\\Tests\\": "tests/phpunit/"
+            "Keboola\\App\\OrchestratorMigrate\\Tests\\": "tests/phpunit/"
         }
     },
     "scripts": {
