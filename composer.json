@@ -3,7 +3,10 @@
     "license": "MIT",
     "require": {
         "PHP": "^7.1",
-        "keboola/php-component": "^3.0"
+        "keboola/orchestrator-php-client": "^1.2",
+        "keboola/php-component": "^3.0",
+        "keboola/storage-api-client": "^10.1",
+        "monolog/monolog": "^1.23"
     },
     "require-dev": {
         "jakub-onderka/php-parallel-lint": "^1.0",
