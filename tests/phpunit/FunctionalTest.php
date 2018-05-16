@@ -21,11 +21,6 @@ class FunctionalTest extends TestCase
     protected $temp;
 
     /**
-     * @var StorageApi
-     */
-    protected $sapiClient;
-
-    /**
      * @var OrchestratorClient
      */
     protected $sourceClient;
@@ -39,14 +34,12 @@ class FunctionalTest extends TestCase
     {
         parent::setUp();
 
-        $this->sapiClient = new StorageApi([
-            'token' => getenv('TEST_SOURCE_STORAGE_API_TOKEN'),
-            'url' => getenv('TEST_SOURCE_STORAGE_API_URL'),
-        ]);
-
         $this->sourceClient = OrchestratorClient::factory([
             'token' => getenv('TEST_SOURCE_STORAGE_API_TOKEN'),
-            'url' => $this->getOrchestratorApiUrl($this->sapiClient),
+            'url' => $this->getOrchestratorApiUrl(new StorageApi([
+                'token' => getenv('TEST_SOURCE_STORAGE_API_TOKEN'),
+                'url' => getenv('TEST_SOURCE_STORAGE_API_URL'),
+            ])),
         ]);
 
         $this->destinationClient = OrchestratorClient::factory([
@@ -73,8 +66,8 @@ class FunctionalTest extends TestCase
             $this->temp->getTmpFolder() . '/config.json',
             \json_encode([
                 'parameters' => [
-                    '#kbcToken' => getenv('TEST_DESTINATION_STORAGE_API_TOKEN'),
-                    'kbcUrl' => getenv('TEST_DESTINATION_STORAGE_API_URL'),
+                    '#kbcToken' => getenv('TEST_SOURCE_STORAGE_API_TOKEN'),
+                    'kbcUrl' => getenv('TEST_SOURCE_STORAGE_API_URL'),
                 ],
             ])
         );
@@ -126,8 +119,8 @@ class FunctionalTest extends TestCase
             $this->temp->getTmpFolder() . '/config.json',
             \json_encode([
                 'parameters' => [
-                    '#kbcToken' => getenv('TEST_DESTINATION_STORAGE_API_TOKEN'),
-                    'kbcUrl' => getenv('TEST_DESTINATION_STORAGE_API_URL'),
+                    '#kbcToken' => getenv('TEST_SOURCE_STORAGE_API_TOKEN'),
+                    'kbcUrl' => getenv('TEST_SOURCE_STORAGE_API_URL'),
                 ],
             ])
         );
@@ -157,8 +150,8 @@ class FunctionalTest extends TestCase
         $runCommand = "php /code/src/run.php";
         return new  Process($runCommand, null, [
             'KBC_DATADIR' => $this->temp->getTmpFolder(),
-            'KBC_URL' => getenv('TEST_SOURCE_STORAGE_API_URL'),
-            'KBC_TOKEN' => getenv('TEST_SOURCE_STORAGE_API_TOKEN'),
+            'KBC_URL' => getenv('TEST_DESTINATION_STORAGE_API_URL'),
+            'KBC_TOKEN' => getenv('TEST_DESTINATION_STORAGE_API_TOKEN'),
         ]);
     }
 

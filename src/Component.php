@@ -172,8 +172,8 @@ class Component extends BaseComponent
         // source project
         $this->logger->info('Detecting orchestrator API url for source project');
 
-        $kbcToken = getenv('KBC_TOKEN');
-        $kbcUrl = getenv('KBC_URL');
+        $kbcToken = $this->getConfig()->getValue(['parameters', '#kbcToken']);
+        $kbcUrl = $this->getConfig()->getValue(['parameters', 'kbcUrl'], getenv('KBC_URL'));
 
         $this->sourceClient = OrchestratorClient::factory([
             'token' => $kbcToken,
@@ -183,8 +183,8 @@ class Component extends BaseComponent
         // destination project
         $this->logger->info('Detecting orchestrator API url for destination project');
 
-        $kbcToken = $this->getConfig()->getValue(['parameters', '#kbcToken']);
-        $kbcUrl = $this->getConfig()->getValue(['parameters', 'kbcUrl'], getenv('KBC_URL'));
+        $kbcToken = getenv('KBC_TOKEN');
+        $kbcUrl = getenv('KBC_URL');
 
         $this->destinationClient = OrchestratorClient::factory([
             'token' => $kbcToken,
