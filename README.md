@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/keboola/app-orchestrator-migrate.svg?branch=master)](https://travis-ci.com/keboola/app-orchestrator-migrate)
+
 # Sample configuration
 
 ```
