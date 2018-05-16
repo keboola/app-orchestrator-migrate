@@ -29,12 +29,6 @@
     },
     "scripts": {
         "tests-phpunit": "phpunit",
-        "tests-datadir": "datadir-tests",
-        "tests": [
-            "@tests-phpunit",
-            "@tests-datadir"
-        ],
-
         "phpstan": "phpstan analyse ./src ./tests --level=max --no-progress -c phpstan.neon",
         "phpcs": "phpcs -n --ignore=vendor --extensions=php .",
         "phpcbf": "phpcbf -n --ignore=vendor --extensions=php .",
@@ -43,7 +37,7 @@
             "@phplint",
             "@phpcs",
             "@phpstan",
-            "@tests"
+            "@tests-phpunit"
         ],
         "ci": [
             "@composer validate --no-check-publish --no-check-all",
