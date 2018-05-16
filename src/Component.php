@@ -14,7 +14,7 @@ use Monolog\Logger;
 
 class Component extends BaseComponent
 {
-    private const ORCHESTRATOR_COMPONENT_ID = 'orchestrator';
+    public const ORCHESTRATOR_COMPONENT_ID = 'orchestrator';
 
     /**
      * @var OrchestratorClient
@@ -24,7 +24,7 @@ class Component extends BaseComponent
     /**
      * @var OrchestratorClient
      */
-    private $destionationClient;
+    private $destinationClient;
 
     /**
      * @var Logger
@@ -101,7 +101,7 @@ class Component extends BaseComponent
     private function checkDestinationProject(): void
     {
         $this->logger->info('Checking destination project for existing orchestrations');
-        $orchestrations = $this->destionationClient->getOrchestrations();
+        $orchestrations = $this->destinationClient->getOrchestrations();
         if (count($orchestrations)) {
             throw new UserException('Destination project has some existing orchestrations');
         }
@@ -109,7 +109,7 @@ class Component extends BaseComponent
 
     private function fixDestinationOrchestrationTasks(int $orchestrationId, array $idsMap): void
     {
-        $orchestration = $this->destionationClient->getOrchestration($orchestrationId);
+        $orchestration = $this->destinationClient->getOrchestration($orchestrationId);
 
         $this->logger->info(sprintf('Fixing "%s" orchestration tasks', $orchestration['name']));
         foreach ($orchestration['tasks'] as $key => $task) {
@@ -127,14 +127,14 @@ class Component extends BaseComponent
             }
         }
 
-        $this->destionationClient->updateOrchestration($orchestrationId, ['tasks' => $orchestration['tasks']]);
+        $this->destinationClient->updateOrchestration($orchestrationId, ['tasks' => $orchestration['tasks']]);
     }
 
     private function migrateOrchestration(array $orchestration): int
     {
         $this->logger->info(sprintf('Migrating "%s" orchestration', $orchestration['name']));
 
-        $response = $this->destionationClient->createOrchestration($orchestration['name'], [
+        $response = $this->destinationClient->createOrchestration($orchestration['name'], [
             'crontabRecord' => $orchestration['crontabRecord'],
             'notifications' => $orchestration['notifications'],
             'tasks' => $orchestration['tasks'],
@@ -142,7 +142,7 @@ class Component extends BaseComponent
         ]);
 
         $orchestrationId = $response['id'];
-        $this->destionationClient->updateOrchestration($orchestrationId, ['active' => false]);
+        $this->destinationClient->updateOrchestration($orchestrationId, ['active' => false]);
 
         return $orchestrationId;
     }
@@ -164,7 +164,7 @@ class Component extends BaseComponent
         }
 
         $tokenData = $sapiClient->verifyToken();
-        throw new UserException(sprintf('Orchestrator now found in %s region', $tokenData['owner']['region']));
+        throw new UserException(sprintf('Orchestrator not found in %s region', $tokenData['owner']['region']));
     }
 
     private function initOrchestratorClients(): void
@@ -186,7 +186,7 @@ class Component extends BaseComponent
         $kbcToken = $this->getConfig()->getValue(['parameters', '#kbcToken']);
         $kbcUrl = $this->getConfig()->getValue(['parameters', 'kbcUrl'], getenv('KBC_URL'));
 
-        $this->destionationClient = OrchestratorClient::factory([
+        $this->destinationClient = OrchestratorClient::factory([
             'token' => $kbcToken,
             'url' => $this->getOrchestratorApiUrl($kbcToken, $kbcUrl),
         ]);
