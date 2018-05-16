@@ -184,6 +184,13 @@ class FunctionalTest extends TestCase
             'Master orchestration',
             [
                 'crontabRecord' => '1 1 1 1 1',
+                'notifications' => [
+                    [
+                        'channel' => 'waiting',
+                        'email' => 'devel@keboola.com',
+                        'timeout' => 50,
+                    ],
+                ],
             ]
         );
 
@@ -227,6 +234,16 @@ class FunctionalTest extends TestCase
         } else {
             self::assertTrue($orchestration['active']);
         }
+
+        self::assertCount(1, $orchestration['notifications']);
+        self::assertEquals(
+            [
+               'channel' => 'waiting',
+               'email' => 'devel@keboola.com',
+               'timeout' => 50,
+            ],
+            $orchestration['notifications'][0]
+        );
 
         self::assertCount(2, $orchestration['tasks']);
 
