@@ -93,7 +93,6 @@ class Component extends BaseComponent
                     return true;
                 }
             }
-
         }
 
         return false;
