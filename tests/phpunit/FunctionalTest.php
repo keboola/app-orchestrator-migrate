@@ -188,7 +188,9 @@ class FunctionalTest extends TestCase
                     [
                         'channel' => 'waiting',
                         'email' => 'devel@keboola.com',
-                        'timeout' => 50,
+                        'parameters' => [
+                            'timeout' => 50,
+                        ],
                     ],
                 ],
             ]
@@ -240,7 +242,9 @@ class FunctionalTest extends TestCase
             [
                'channel' => 'waiting',
                'email' => 'devel@keboola.com',
-               'timeout' => 50,
+                'parameters' => [
+                    'timeout' => 50,
+                ],
             ],
             $orchestration['notifications'][0]
         );
