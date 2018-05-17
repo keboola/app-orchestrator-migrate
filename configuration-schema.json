@@ -1,0 +1,33 @@
+{
+  "type": "object",
+  "title": "Parameters",
+  "required": [
+    "#kbcToken",
+    "kbcUrl"
+  ],
+  "properties": {
+    "#kbcToken": {
+      "type": "string",
+      "title": "KBC Storage API token",
+      "format": "password",
+      "default": "",
+      "minLength": 1,
+      "propertyOrder": 1
+    },
+    "kbcUrl": {
+      "title": "KBC Region",
+      "type": "string",
+      "enum": [
+        "https://connection.keboola.com",
+        "https://connection.eu-central-1.keboola.com"
+      ],
+      "options": {
+        "enum_titles": [
+          "US East",
+          "EU West"
+        ]
+      },
+      "propertyOrder": 2
+    }
+  }
+}
