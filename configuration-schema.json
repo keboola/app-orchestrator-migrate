@@ -2,11 +2,11 @@
   "type": "object",
   "title": "Parameters",
   "required": [
-    "#kbcToken",
-    "kbcUrl"
+    "#sourceKbcToken",
+    "sourceKbcUrl"
   ],
   "properties": {
-    "#kbcToken": {
+    "#sourceKbcToken": {
       "type": "string",
       "title": "KBC Storage API token",
       "format": "password",
@@ -14,8 +14,8 @@
       "minLength": 1,
       "propertyOrder": 1
     },
-    "kbcUrl": {
-      "title": "KBC Region",
+    "sourceKbcUrl": {
+      "title": "KBC Stack",
       "type": "string",
       "enum": [
         "https://connection.keboola.com",
@@ -23,8 +23,8 @@
       ],
       "options": {
         "enum_titles": [
-          "US East",
-          "EU West"
+          "US",
+          "EU"
         ]
       },
       "propertyOrder": 2
