@@ -8,9 +8,6 @@ use Keboola\Component\BaseComponent;
 use Keboola\Component\UserException;
 use Keboola\Orchestrator\Client as OrchestratorClient;
 use Keboola\StorageApi\Client as StorageApiClient;
-use Monolog\Formatter\LineFormatter;
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
 
 class Component extends BaseComponent
 {
@@ -26,21 +23,15 @@ class Component extends BaseComponent
      */
     private $destinationClient;
 
-    /**
-     * @var Logger
-     */
-    private $logger;
-
     public function run(): void
     {
-        $this->initLogger();
         $this->initOrchestratorClients();
 
-        $this->logger->info('Loading orchestrations from current project');
+        $this->getLogger()->info('Loading orchestrations from current project');
         $sourceOrchestrations = $this->sourceClient->getOrchestrations();
 
         if (!count($sourceOrchestrations)) {
-            $this->logger->info('Current project contains any orchestrations');
+            $this->getLogger()->info('Current project contains any orchestrations');
             return;
         }
 
@@ -50,9 +41,9 @@ class Component extends BaseComponent
         $destinationIdsForConvert = [];
 
         // migrate orchestrations
-        $this->logger->info('Orchestrations migration');
+        $this->getLogger()->info('Orchestrations migration');
         foreach ($sourceOrchestrations as $i => $sourceOrchestration) {
-            $this->logger->info(sprintf('Orchestration (%d/%d)', $i + 1, count($sourceOrchestrations)));
+            $this->getLogger()->info(sprintf('Orchestration (%d/%d)', $i + 1, count($sourceOrchestrations)));
 
             $sourceId = $sourceOrchestration['id'];
             $orchestration = $this->sourceClient->getOrchestration($sourceId);
@@ -67,9 +58,9 @@ class Component extends BaseComponent
 
         // fix orchestrations IDs in tasks
         if (count($destinationIdsForConvert)) {
-            $this->logger->info('Orchestrations tasks fix');
+            $this->getLogger()->info('Orchestrations tasks fix');
             foreach ($destinationIdsForConvert as $i => $destinationId) {
-                $this->logger->info(sprintf('Orchestration (%d/%d)', $i + 1, count($destinationIdsForConvert)));
+                $this->getLogger()->info(sprintf('Orchestration (%d/%d)', $i + 1, count($destinationIdsForConvert)));
                 $this->fixDestinationOrchestrationTasks($destinationId, $sourceDestinationIds);
             }
         }
@@ -100,7 +91,7 @@ class Component extends BaseComponent
 
     private function checkDestinationProject(): void
     {
-        $this->logger->info('Checking destination project for existing orchestrations');
+        $this->getLogger()->info('Checking destination project for existing orchestrations');
         $orchestrations = $this->destinationClient->getOrchestrations();
         if (count($orchestrations)) {
             throw new UserException('Destination project has some existing orchestrations');
@@ -111,7 +102,7 @@ class Component extends BaseComponent
     {
         $orchestration = $this->destinationClient->getOrchestration($orchestrationId);
 
-        $this->logger->info(sprintf('Fixing "%s" orchestration tasks', $orchestration['name']));
+        $this->getLogger()->info(sprintf('Fixing "%s" orchestration tasks', $orchestration['name']));
         foreach ($orchestration['tasks'] as $key => $task) {
             if (isset($task['component'])) {
                 if ($task['component'] !== self::ORCHESTRATOR_COMPONENT_ID) {
@@ -132,7 +123,7 @@ class Component extends BaseComponent
 
     private function migrateOrchestration(array $orchestration): int
     {
-        $this->logger->info(sprintf('Migrating "%s" orchestration', $orchestration['name']));
+        $this->getLogger()->info(sprintf('Migrating "%s" orchestration', $orchestration['name']));
 
         $response = $this->destinationClient->createOrchestration($orchestration['name'], [
             'crontabRecord' => $orchestration['crontabRecord'],
@@ -170,7 +161,7 @@ class Component extends BaseComponent
     private function initOrchestratorClients(): void
     {
         // source project
-        $this->logger->info('Detecting orchestrator API url for source project');
+        $this->getLogger()->info('Detecting orchestrator API url for source project');
 
         $kbcToken = $this->getConfig()->getValue(['parameters', '#sourceKbcToken']);
         $kbcUrl = $this->getConfig()->getValue(['parameters', 'sourceKbcUrl']);
@@ -181,7 +172,7 @@ class Component extends BaseComponent
         ]);
 
         // destination project
-        $this->logger->info('Detecting orchestrator API url for destination project');
+        $this->getLogger()->info('Detecting orchestrator API url for destination project');
 
         $kbcToken = getenv('KBC_TOKEN');
         $kbcUrl = getenv('KBC_URL');
@@ -190,26 +181,5 @@ class Component extends BaseComponent
             'token' => $kbcToken,
             'url' => $this->getOrchestratorApiUrl($kbcToken, $kbcUrl),
         ]);
-    }
-
-    private function initLogger(): void
-    {
-        $formatter = new LineFormatter("%message%\n");
-
-        $errorHandler = new StreamHandler('php://stderr', Logger::WARNING, false);
-        $errorHandler->setFormatter($formatter);
-
-        $handler = new StreamHandler('php://stdout', Logger::INFO);
-        $handler->setFormatter($formatter);
-
-        $logger = new Logger(
-            getenv('KBC_COMPONENTID')?: 'app-orchestrator-migrate',
-            [
-                $errorHandler,
-                $handler,
-            ]
-        );
-
-        $this->logger =  $logger;
     }
 }

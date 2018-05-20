@@ -129,7 +129,7 @@ class FunctionalTest extends TestCase
         $runProcess->run();
 
         $this->assertEquals(1, $runProcess->getExitCode());
-        $this->assertContains('Destination project has some existing orchestrations', $runProcess->getOutput());
+        $this->assertContains('Destination project has some existing orchestrations', $runProcess->getErrorOutput());
     }
 
     private function cleanupKbcProjects(): void
