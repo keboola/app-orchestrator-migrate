@@ -16,10 +16,11 @@ class ConfigDefinition extends BaseConfigDefinition
         /** @noinspection NullPointerExceptionInspection */
         $parametersNode
             ->children()
-                ->scalarNode('#kbcToken')
+                ->scalarNode('#sourceKbcToken')
                     ->isRequired()
                 ->end()
-                ->scalarNode('kbcUrl')
+                ->scalarNode('sourceKbcUrl')
+                    ->isRequired()
                 ->end()
             ->end()
         ;

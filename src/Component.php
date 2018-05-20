@@ -151,7 +151,7 @@ class Component extends BaseComponent
     {
         $sapiClient = new StorageApiClient([
             'token' => $kbcToken,
-            'url' => $kbcUrl ?: getenv('KBC_URL'),
+            'url' => $kbcUrl,
         ]);
 
         $index = $sapiClient->indexAction();
@@ -172,8 +172,8 @@ class Component extends BaseComponent
         // source project
         $this->logger->info('Detecting orchestrator API url for source project');
 
-        $kbcToken = $this->getConfig()->getValue(['parameters', '#kbcToken']);
-        $kbcUrl = $this->getConfig()->getValue(['parameters', 'kbcUrl'], getenv('KBC_URL'));
+        $kbcToken = $this->getConfig()->getValue(['parameters', '#sourceKbcToken']);
+        $kbcUrl = $this->getConfig()->getValue(['parameters', 'sourceKbcUrl']);
 
         $this->sourceClient = OrchestratorClient::factory([
             'token' => $kbcToken,

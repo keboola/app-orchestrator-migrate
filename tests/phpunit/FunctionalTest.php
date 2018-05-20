@@ -66,8 +66,8 @@ class FunctionalTest extends TestCase
             $this->temp->getTmpFolder() . '/config.json',
             \json_encode([
                 'parameters' => [
-                    '#kbcToken' => getenv('TEST_SOURCE_STORAGE_API_TOKEN'),
-                    'kbcUrl' => getenv('TEST_SOURCE_STORAGE_API_URL'),
+                    '#sourceKbcToken' => getenv('TEST_SOURCE_STORAGE_API_TOKEN'),
+                    'sourceKbcUrl' => getenv('TEST_SOURCE_STORAGE_API_URL'),
                 ],
             ])
         );
@@ -119,8 +119,8 @@ class FunctionalTest extends TestCase
             $this->temp->getTmpFolder() . '/config.json',
             \json_encode([
                 'parameters' => [
-                    '#kbcToken' => getenv('TEST_SOURCE_STORAGE_API_TOKEN'),
-                    'kbcUrl' => getenv('TEST_SOURCE_STORAGE_API_URL'),
+                    '#sourceKbcToken' => getenv('TEST_SOURCE_STORAGE_API_TOKEN'),
+                    'sourceKbcUrl' => getenv('TEST_SOURCE_STORAGE_API_URL'),
                 ],
             ])
         );

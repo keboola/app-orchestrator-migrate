@@ -31,41 +31,29 @@ class ConfigDefinitionTest extends TestCase
             'config' => [
                 [
                     'parameters' => [
-                        '#kbcToken' => 'some-token',
-                        'kbcUrl' => 'https://connection.keboola.com',
+                        '#sourceKbcToken' => 'some-token',
+                        'sourceKbcUrl' => 'https://connection.keboola.com',
                     ],
                 ],
                 [
                     'parameters' => [
-                        '#kbcToken' => 'some-token',
-                        'kbcUrl' => 'https://connection.keboola.com',
-                    ],
-                ],
-            ],
-            'config without KBC url' => [
-                [
-                    'parameters' => [
-                        '#kbcToken' => 'some-token',
-                    ],
-                ],
-                [
-                    'parameters' => [
-                        '#kbcToken' => 'some-token',
+                        '#sourceKbcToken' => 'some-token',
+                        'sourceKbcUrl' => 'https://connection.keboola.com',
                     ],
                 ],
             ],
             'config with extra params' => [
                 [
                     'parameters' => [
-                        '#kbcToken' => 'some-token',
-                        'kbcUrl' => 'https://connection.keboola.com',
+                        '#sourceKbcToken' => 'some-token',
+                        'sourceKbcUrl' => 'https://connection.keboola.com',
                         'other' => 'something',
                     ],
                 ],
                 [
                     'parameters' => [
-                        '#kbcToken' => 'some-token',
-                        'kbcUrl' => 'https://connection.keboola.com',
+                        '#sourceKbcToken' => 'some-token',
+                        'sourceKbcUrl' => 'https://connection.keboola.com',
                         'other' => 'something',
                     ],
                 ],
@@ -99,16 +87,25 @@ class ConfigDefinitionTest extends TestCase
                     'parameters' => [],
                 ],
                 InvalidConfigurationException::class,
-                'The child node "#kbcToken" at path "root.parameters" must be configured.',
+                'The child node "#sourceKbcToken" at path "root.parameters" must be configured.',
             ],
             'missing token' => [
                 [
                     'parameters' => [
-                        'kbcUrl' => 'https://connection.keboola.com',
+                        'sourceKbcUrl' => 'https://connection.keboola.com',
                     ],
                 ],
                 InvalidConfigurationException::class,
-                'The child node "#kbcToken" at path "root.parameters" must be configured.',
+                'The child node "#sourceKbcToken" at path "root.parameters" must be configured.',
+            ],
+            'missing kbc url ' => [
+                [
+                    'parameters' => [
+                        '#sourceKbcToken' => 'some-token',
+                    ],
+                ],
+                InvalidConfigurationException::class,
+                'The child node "sourceKbcUrl" at path "root.parameters" must be configured.',
             ],
         ];
     }
