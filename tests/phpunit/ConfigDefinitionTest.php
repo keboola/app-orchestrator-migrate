@@ -42,22 +42,6 @@ class ConfigDefinitionTest extends TestCase
                     ],
                 ],
             ],
-            'config with extra params' => [
-                [
-                    'parameters' => [
-                        '#sourceKbcToken' => 'some-token',
-                        'sourceKbcUrl' => 'https://connection.keboola.com',
-                        'other' => 'something',
-                    ],
-                ],
-                [
-                    'parameters' => [
-                        '#sourceKbcToken' => 'some-token',
-                        'sourceKbcUrl' => 'https://connection.keboola.com',
-                        'other' => 'something',
-                    ],
-                ],
-            ],
         ];
     }
 
@@ -98,7 +82,7 @@ class ConfigDefinitionTest extends TestCase
                 InvalidConfigurationException::class,
                 'The child node "#sourceKbcToken" at path "root.parameters" must be configured.',
             ],
-            'missing kbc url ' => [
+            'missing kbc url' => [
                 [
                     'parameters' => [
                         '#sourceKbcToken' => 'some-token',
@@ -106,6 +90,15 @@ class ConfigDefinitionTest extends TestCase
                 ],
                 InvalidConfigurationException::class,
                 'The child node "sourceKbcUrl" at path "root.parameters" must be configured.',
+            ],
+            'extra params' => [
+                [
+                    'parameters' => [
+                        'other' => 'something',
+                    ],
+                ],
+                InvalidConfigurationException::class,
+                'Unrecognized option "other" under "root.parameters"',
             ],
         ];
     }
