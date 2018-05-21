@@ -5,8 +5,8 @@
 ```
 {
   "parameters": {
-    "#kbcToken": "YOUR_KBC_TOKEN",
-    "kbcUrl": "STORAGE_API_URL"
+    "#sourceKbcToken": "YOUR_KBC_TOKEN",
+    "sourceKbcUrl": "STORAGE_API_URL"
   }
 }
 
