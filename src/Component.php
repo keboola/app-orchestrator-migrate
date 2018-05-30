@@ -27,15 +27,15 @@ class Component extends BaseComponent
     {
         $this->initOrchestratorClients();
 
-        $this->getLogger()->info('Loading orchestrations from current project');
+        $this->getLogger()->info('Loading orchestrations from source project');
         $sourceOrchestrations = $this->sourceClient->getOrchestrations();
 
         if (!count($sourceOrchestrations)) {
-            $this->getLogger()->info('Current project contains any orchestrations');
+            $this->getLogger()->info('Source project contains any orchestrations');
             return;
         }
 
-        $this->checkDestinationProject();
+        $this->checkProject();
 
         $sourceDestinationIds = [];
         $destinationIdsForConvert = [];
@@ -89,12 +89,12 @@ class Component extends BaseComponent
         return false;
     }
 
-    private function checkDestinationProject(): void
+    private function checkProject(): void
     {
-        $this->getLogger()->info('Checking destination project for existing orchestrations');
+        $this->getLogger()->info('Checking current project for existing orchestrations');
         $orchestrations = $this->destinationClient->getOrchestrations();
         if (count($orchestrations)) {
-            throw new UserException('Destination project has some existing orchestrations');
+            throw new UserException('Current project has some existing orchestrations');
         }
     }
 
