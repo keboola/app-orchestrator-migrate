@@ -5,3 +5,8 @@ services:
     volumes:
       - ./:/code
       - ./data:/data
+    environment:
+      - TEST_SOURCE_STORAGE_API_TOKEN
+      - TEST_SOURCE_STORAGE_API_URL
+      - TEST_DESTINATION_STORAGE_API_TOKEN
+      - TEST_DESTINATION_STORAGE_API_URL
