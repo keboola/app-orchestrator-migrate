@@ -68,7 +68,7 @@ docker-compose build
 
 - Run the test suite using this command
 
-    **Tests will delete all current component configurations and data from both KBC projects!**
+    **Tests will delete all configured orchestrations in both KBC projects!**
 
 ```
 docker-compose run --rm dev composer ci
