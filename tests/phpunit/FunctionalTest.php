@@ -109,6 +109,26 @@ class FunctionalTest extends TestCase
         self::assertEquals($childId, $orchestration['tasks'][0]['actionParameters']['config']);
     }
 
+    public function testEmptySouceProjectRun(): void
+    {
+        $fileSystem = new Filesystem();
+        $fileSystem->dumpFile(
+            $this->temp->getTmpFolder() . '/config.json',
+            \json_encode([
+                'parameters' => [
+                    '#sourceKbcToken' => getenv('TEST_SOURCE_STORAGE_API_TOKEN'),
+                    'sourceKbcUrl' => getenv('TEST_SOURCE_STORAGE_API_URL'),
+                ],
+            ])
+        );
+
+        $runProcess = $this->createTestProcess();
+        $runProcess->mustRun();
+
+        $this->assertContains('Source project contains any orchestrations', $runProcess->getOutput());
+        $this->assertEmpty($runProcess->getErrorOutput());
+    }
+
     public function testNotEmptyProjectErrorRun(): void
     {
         $this->createChildOrchestration($this->sourceClient);
@@ -129,7 +149,7 @@ class FunctionalTest extends TestCase
         $runProcess->run();
 
         $this->assertEquals(1, $runProcess->getExitCode());
-        $this->assertContains('Destination project has some existing orchestrations', $runProcess->getErrorOutput());
+        $this->assertContains('Current project has some existing orchestrations', $runProcess->getErrorOutput());
     }
 
     private function cleanupKbcProjects(): void
