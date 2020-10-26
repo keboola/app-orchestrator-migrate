@@ -167,7 +167,7 @@ class FunctionalTest extends TestCase
 
     private function createTestProcess(): Process
     {
-        $runCommand = "php /code/src/run.php";
+        $runCommand = 'php /code/src/run.php';
         return new  Process($runCommand, null, [
             'KBC_DATADIR' => $this->temp->getTmpFolder(),
             'KBC_URL' => getenv('TEST_DESTINATION_STORAGE_API_URL'),
@@ -229,7 +229,6 @@ class FunctionalTest extends TestCase
             ->setActive(true)
             ->setTimeoutMinutes(10)
             ->setActionParameters(['config' => $childOrchestrationId]);
-
 
         $task2 = (new OrchestrationTask())->setComponent('keboola.csv-import')
             ->setAction('run')
