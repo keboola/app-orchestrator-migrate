@@ -6,7 +6,7 @@
 
 Application migrates Orchestrations between two Keboola Connection projects.
 
-You must **run** this application **in destination project** and the project must contains **any existing orchestrations**.
+You must **run** this application **in destination project** and the project must contain **any existing orchestrations**.
 
  ### Application flow
 
@@ -23,7 +23,7 @@ You must **run** this application **in destination project** and the project mus
 Use `#sourceKbcToken` and `sourceKbcUrl` parameters to create asynchronous job.
 
 - `#sourceKbcToken` -  Source project KBC Storage API token
-- `sourceKbcUrl` -  KBC Storage API endopint for source project region
+- `sourceKbcUrl` -  KBC Storage API endpoint for source project region
 
 ```
 curl -X POST \
